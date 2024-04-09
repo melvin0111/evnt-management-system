@@ -1,0 +1,118 @@
+.flex-container2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    background-image: url('/public/images/img-10.png'); /* Update with the correct path */
+    background-size: cover; /* Ensures the image covers the entire viewport without repeating */
+    background-position: center; /* Centers the background image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+  } 
+
+  .modal-form2 {
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 350px;
+    padding: 50px 20px;
+    font-size: large;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serifs;
+    color: black;
+    text-align: center;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .modal-form2 .form-group2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns items to the start of the flex container, which is the left side */
+    width: 100%;
+    margin-bottom: 10px; /* Adds some space below each form group */
+  }
+
+  .modal-form2 > input {
+    border: 0;
+    border-radius: 3px;
+    border-bottom: 2px solid #3e0808;
+    display: block;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    width: 100%;
+    margin: 30px 0px 20px 0px;
+    padding: 10px;
+    outline: 0;
+    
+  } 
+
+  .modal-form2 h2 {
+    color: #333; /* Change the color as needed */
+    font-size: 50px; /* Increase font size */
+    margin-bottom: 20px; /* Add some space below the title */
+    font-weight: bold; /* Make the title bold */
+    /* Add other styles like font-family if you want to change the font */
+  }
+  
+  .modal-form2 label {
+    color: #333;
+    font-size: 20px; 
+    margin-bottom: 20px;
+    align-items: left; 
+    justify-items: left;
+  }
+  
+  
+  .modal-form2 input[type='email'],
+  .modal-form2 input[type='password'],  
+  .modal-form2 input[type='username'], 
+  .modal-form2 input[type='contactInfo'] {
+    color: #333; /* Text color */
+    font-size: 16px; /* Smaller font size if necessary */
+    border: 1px solid #ccc; /* Border color and width */
+    padding: 10px; /* Smaller padding to reduce the height of the input boxes */
+    border-radius: 2px; /* Match border-radius with your buttons if needed */
+    background-color: #ffffff; /* Background color */
+    width: 100%; /* Adjust width as needed to match button width */
+    margin: 0 auto; /* Center the input boxes if they're not 100% width */
+    display: block; /* Ensures that the input occupies its own line */
+    font-weight: 700; /* Optional: makes text bold like the buttons */
+    box-sizing: border-box; /* Ensures padding and border are included in the width */
+  }
+  
+  
+  .modal-form2 input[type='email']::placeholder,
+  .modal-form2 input[type='password']::placeholder, 
+  .modal-form2 input[type='username']::placeholder, 
+  .modal-form2 input[type='contactInfo']::placeholder {
+    color: #888; /* Change the placeholder text color */
+    /* You can add more styles for the placeholder text if necessary */
+    border: 0px solid #1E0A3C;
+    border-radius: 2px;
+    background-color: #ffffff;
+    width: 50%;
+    font-weight: 700;
+  }
+  
+  /* Styling for when an input field is focused */
+  .modal-form2 > input:focus {
+    border-bottom-color: #F05538;
+  }
+  
+  /* Global button styles, which will also apply to the form's submit button */
+  button {
+    border: 1px solid #1E0A3C;
+    border-radius: 3px;
+    background-color: #ffffff;
+    width: 100%;
+    font-weight: 700;
+    padding: 0.5em 1em;
+    margin-top: 20px;
+    transition: background-color 500ms, border 500ms, color 500ms;
+  }
+  
+  /* Hover effect for buttons */
+  button:hover {
+    background-color: #F05538;
+    border: 2px solid white;
+    color: white;
+  }

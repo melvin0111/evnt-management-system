@@ -1,11 +1,12 @@
 import React from 'react'
 import '../App.css'
+import SignupForm from '../components/signupForm/signupForm'
 
 function SignUp() {
   return (
-    <div>
-      
-    </div>
+  <>
+  < SignupForm />
+  </>
   )
 }
 
