@@ -1,0 +1,34 @@
+
+.orders-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  .event-container {
+    margin-top: -15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ccc;
+    background-color: #edc9c9;
+    padding: 10px;
+    width: 80%;
+    margin-bottom: 10px;
+  }
+  
+  .event-details {
+    flex: 1;
+  }
+  
+  .total-expenses {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-left: auto; /* Aligns to the right */
+    width: fit-content; /* Adjust width as needed */
+  }
+  
+  .event-details h2 {
+     margin-bottom: 10px;
+  }
