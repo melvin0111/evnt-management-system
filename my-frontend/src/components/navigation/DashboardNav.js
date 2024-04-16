@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
-
+//GO TO SIDEBAR DATA IF PROBLEMS WITH URL or ADD ICON
 import { SidebarData } from './SidebarData';
 import styles from '../navigation/DashboardNav.module.css'; // Import as a module
 import { IconContext } from 'react-icons';
