@@ -184,6 +184,7 @@ const [eventList, setEvents] = useState([]);
                     <th>End Date</th>
                     <th>Location</th>
                     <th>Capacity</th>
+                    <th>Tickets</th>
                 </tr>
             </thead>
             <tbody>
