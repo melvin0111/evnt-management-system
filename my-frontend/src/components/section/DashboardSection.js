@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
-import '../section/DashboardSection.css'
+import '../section/DashboardSection.css';
+import Modal from '../modal/Modal';
 
 function DashboardSection() {
 
@@ -50,8 +51,7 @@ function DashboardSection() {
             // Handle network error
         }
     };
-// Demonstrating Data into Tables ----------------------------still working -----------------------
-// const [events, setEvents] = useState([]);
+// Demonstrating Data into Tables ----------------------------WORKS, ABLE TO DISPLAY ONTO TABLE-----------------------
 const [eventList, setEvents] = useState([]);
 
 // Correctly setting up fetchEvents to use GET method
@@ -91,6 +91,72 @@ const [eventList, setEvents] = useState([]);
         useEffect(() => {
             fetchEvents();
         }, []);
+//-------------------------------------------------------------Workin on TICKETS
+        const [ticketModalOpen, setTicketModalOpen] = useState(false);
+        const [currentEventId, setCurrentEventId] = useState(null);
+        const [newTicket, setNewTicket] = useState({
+            description: '',
+            quantity: '',
+            ticket_type: '',
+            price: ''
+        });
+
+        const handleManageTickets = (eventId) => {
+            setCurrentEventId(eventId);
+            setTicketModalOpen(true);
+        };
+
+        const handleTicketInputChange = (e) => {
+            setNewTicket({
+                ...newTicket,
+                [e.target.name]: e.target.value
+            });
+        };
+
+        const handleTicketSubmit = async (e) => {
+            e.preventDefault();
+            const success = await addTicketToEvent({
+                ...newTicket,
+                event_id: currentEventId,  // Assuming this is the name of the property expected by your API
+            });
+            if (success) {
+                setTicketModalOpen(false); // Close the modal on success
+                setNewTicket({ description: '', quantity: '', ticket_type: '', price: '' }); // Reset form on success
+                // Optionally refresh the list of tickets or give some success feedback to the user
+            } else {
+                // Handle the error case, perhaps with an error message
+            }
+        };
+        
+
+        const addTicketToEvent = async (ticketData) => {
+            const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+            try {
+                const response = await fetch('http://localhost:3004/api/event/ticket', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    body: JSON.stringify(ticketData),
+                });
+        
+                const data = await response.json();
+                if (response.ok) {
+                    console.log('Ticket added:', data);
+                    return data; // or return true to indicate success
+                } else {
+                    console.error('Failed to add ticket:', data.message);
+                    return false; // or throw an error to indicate failure
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                return false; // or throw an error to handle network error
+            }
+        };
+        
+        
+
 
     return (
         <div>
@@ -129,11 +195,23 @@ const [eventList, setEvents] = useState([]);
                         <td>{event.end_date}</td>
                         <td>{event.location.city + ', ' + event.location.state}</td>
                         <td>{event.capacity}</td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-                </div>
+                            <td><button onClick={() => handleManageTickets(event.id)}>Manage Tickets</button></td>                    
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+                    </div>
+                    <Modal show={ticketModalOpen} onClose={() => setTicketModalOpen(false)}>
+                    <form onSubmit={handleTicketSubmit}>
+                        <h2>Manage Tickets for Event ID: {currentEventId}</h2>
+                        <input type="text" name="description" value={newTicket.description} onChange={handleTicketInputChange} placeholder="Description" />
+                        <input type="number" name="quantity" value={newTicket.quantity} onChange={handleTicketInputChange} placeholder="Quantity" />
+                        <input type="text" name="ticket_type" value={newTicket.ticket_type} onChange={handleTicketInputChange} placeholder="Ticket Type" />
+                        <input type="number" name="price" value={newTicket.price} onChange={handleTicketInputChange} placeholder="Price" />
+                        <button type="submit">Add Ticket</button>
+                    </form>
+                    </Modal>
+
             </div>
 
     );

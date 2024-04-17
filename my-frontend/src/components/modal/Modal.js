@@ -7,14 +7,13 @@ const Modal = ({ show, onClose, children }) => {
     }
 
     return (
-        <div className="modal-backdrop">
-            <div className="modal-content">
-                {children} 
-                <button onClick={onClose}>Close</button> 
+        <div className="modal-backdrop" onClick={onClose}>
+            <div className="modal-content" onClick={e => e.stopPropagation()}> 
+                {children}
+                <button onClick={onClose}>Close</button>
             </div>
         </div>
     );
 };
-
 
 export default Modal;
