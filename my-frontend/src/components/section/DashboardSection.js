@@ -209,7 +209,7 @@ function DashboardSection() {
     const fetchEvents = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch('http://localhost:3004/api/event', {
+            const response = await fetch('http://localhost:3004/api/events', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
