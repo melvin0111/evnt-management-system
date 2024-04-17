@@ -3,6 +3,9 @@
  * @returns { Promise<void> }
  */
 exports.up = async function (knex) {
+    const hasUsersTable = await knex.schema.hasTable('users');
+    if (!hasUsersTable) {
+    
 
     await knex.schema.createTable('users', function (table) {
         table.increments('id').primary();
@@ -97,6 +100,8 @@ exports.up = async function (knex) {
         table.foreign('event_id').references('id').inTable('events');
         table.index('event_id', 'idx_salary_event_id');
     })
+
+}
     return
 };
 
