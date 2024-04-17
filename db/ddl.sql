@@ -9,7 +9,7 @@ CREATE TABLE `events` (
   `location` json NOT NULL,
   `user_id` integer NOT NULL,
   `capacity` integer NOT NULL,
-  `status` varchar(255) NOT NULL DEFAULT 'UPCOMING'
+  `status` varchar(255) NOT NULL DEFAULT 'UPCOMING',
   `updated_at` timestamp DEFAULT (now()),
   `created_at` timestamp DEFAULT (now())
 );
