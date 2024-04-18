@@ -1,4 +1,4 @@
-const { event } = require('../controllers');
+const { event, tickets, expense } = require('../controllers');
 const { validateToken } = require('../midlewares');
 
 const Router = require('express').Router();
@@ -10,17 +10,17 @@ Router.delete('/:id', validateToken, event.del)
 Router.patch('/:id', validateToken, event.updateEvent)
 
 // EXPENSE ROUTES
-// Router.post('/:id/expense', validateToken,)
-// Router.get('/:id/expense', validateToken,)
-// Router.patch('/:id/expense/:expense_id')
-// Router.delete('/:id/expense/:expense_id', validateToken)
+Router.post('/expense', validateToken, expense.createExpense)
+Router.get('/:id/expense', validateToken, expense.getExpenses)
+Router.patch('/expense/:id', validateToken, expense.updateExpense)
+Router.delete('/expense/:id', validateToken, expense.deleteExpense)
 
 
 // TICKET ROUTES
-// Router.post('/:id/ticket', validateToken,)
-// Router.get('/:id/ticket', validateToken,)
-// Router.patch('/:id/expense/:ticket_id', validateToken)
-// Router.delete('/:id/expense/:ticket_id', validateToken)
+Router.get('/:id/ticket', validateToken, tickets.getEventTickets)
+Router.post('/ticket', validateToken, tickets.create)
+Router.patch('/ticket/:id', validateToken, tickets.update)
+Router.delete('/ticket/:id', validateToken, tickets.del)
 
 
 module.exports = Router;
