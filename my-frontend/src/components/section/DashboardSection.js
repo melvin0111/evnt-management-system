@@ -154,6 +154,35 @@ const [eventList, setEvents] = useState([]);
                 return false; // or throw an error to handle network error
             }
         };
+// ------------------------------------------ WORKING ON DELETE EVENT OPTION -------------------------------------------
+
+    const deleteEvent = async (eventId) => {
+        const token = localStorage.getItem('token');  // You already fetch this at the start, no need to pass it again if it's not changing.
+        try {
+            const response = await fetch(`http://localhost:3004/api/event/${eventId}`, {
+                method: 'DELETE',  // Specify the method to be DELETE
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                // Successfully deleted the event
+                console.log('Event deleted successfully');
+                // Update eventList by filtering out the deleted event
+                setEvents(currentEvents => currentEvents.filter(event => event.id !== eventId));
+            } else {
+                const errorData = await response.json();
+                console.error('Failed to delete the event:', errorData.message);
+                // Optionally, show an error message to the user
+            }
+        } catch (error) {
+            console.error('Error deleting the event:', error);
+            // Optionally, show an error message to the user
+        }
+    };
+
         
         
 
@@ -196,7 +225,9 @@ const [eventList, setEvents] = useState([]);
                         <td>{event.end_date}</td>
                         <td>{event.location.city + ', ' + event.location.state}</td>
                         <td>{event.capacity}</td>
-                            <td><button onClick={() => handleManageTickets(event.id)}>Manage Tickets</button></td>                    
+                            <td><button onClick={() => handleManageTickets(event.id)}>Manage Tickets</button></td> 
+                            <td><button onClick={() => deleteEvent(event.id)}>Delete</button></td> 
+
                         </tr>
                     ))}
                 </tbody>
