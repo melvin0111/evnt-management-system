@@ -191,7 +191,7 @@ const [eventList, setEvents] = useState([]);
         <div>
             <div>
             <form onSubmit={handleSubmit}>
-                <h2>Hello, user!</h2>
+                <h1>Hello, user!</h1>
                 <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Event Name" />
                 <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Event Description" />
                 <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} placeholder="Start Date" />
@@ -213,7 +213,9 @@ const [eventList, setEvents] = useState([]);
                     <th>End Date</th>
                     <th>Location</th>
                     <th>Capacity</th>
-                    <th>Tickets</th>
+                    <th>Manage</th>
+                    <th></th>
+                    
                 </tr>
             </thead>
             <tbody>
