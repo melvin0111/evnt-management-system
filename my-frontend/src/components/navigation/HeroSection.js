@@ -16,7 +16,7 @@ function HeroSection() {
         Get Started 
         </Button>
 
-        <Button className='btns' buttonStyle='btn--primary'
+        <Button className='btns' buttonStyle='btn--outline'
         buttonSize='btn--large'>
             Book Event <i class="fa fa-bookmark-o" aria-hidden="true"></i>
         </Button>

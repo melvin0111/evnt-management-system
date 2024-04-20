@@ -102,10 +102,29 @@
 }
 
 /* Global button styles, which will also apply to the form's submit button */
-button {
+/* button {
   border: 1px solid #1E0A3C;
   border-radius: 3px;
   background-color: #ffffff;
+  width: 100%;
+  font-weight: 700;
+  padding: 0.5em 1em;
+  margin-top: 20px;
+  transition: background-color 500ms, border 500ms, color 500ms;
+} */
+
+/* Hover effect for buttons */
+/* button:hover {
+  background-color: #F05538;
+  border: 2px solid white;
+  color: white;
+} */
+/* Base button styles */
+button {
+  border: 1px solid #1E0A3C; /* Change this color if you want the border to be different */
+  border-radius: 3px;
+  background-color: #ffffff; /* white background */
+  color: #242424; /* black text color */
   width: 100%;
   font-weight: 700;
   padding: 0.5em 1em;
@@ -115,10 +134,12 @@ button {
 
 /* Hover effect for buttons */
 button:hover {
-  background-color: #F05538;
-  border: 2px solid white;
-  color: white;
+  background-color: #F05538; /* Orange background */
+  border: 2px solid white; /* White border */
+  color: white; /* White text color */
 }
+
+
 /* Styles for error messages */
 .error-message {
     color: #ff3860; /* Bright red color for visibility */

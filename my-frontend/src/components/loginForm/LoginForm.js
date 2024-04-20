@@ -79,10 +79,10 @@ function LoginForm() {
           <label htmlFor='remember-me'>Remember Me</label>
         </div> 
         {error && <div className="error-message">{error}</div>}
-        <button type='submit' className='btn-primary'>
+        <button type='submit' className='btn-outline'>
           Sign In 
         </button>
-        <button type='button' className='btn-primary' onClick={handleSignUp}>
+        <button type='button' className='btn-outline' onClick={handleSignUp}>
           Sign Up 
         </button>
       </form>
