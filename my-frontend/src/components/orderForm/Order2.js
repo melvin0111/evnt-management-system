@@ -47,53 +47,90 @@
 //   };
   
 //   export default OrdersPage;
-import React, { useState, useEffect } from 'react';
 
-function OrdersPage({ eventId }) {
-    const [orders, setOrders] = useState([]);
-    const [expenses, setExpenses] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+import React, { useState, useEffect } from 'react';
+import '../orderForm/Order2.css'; // Ensure you have the appropriate CSS for this component
+
+function OrdersPage() {
+    const [events, setEvents] = useState([]);
+    const [expenses, setExpenses] = useState({});
 
     useEffect(() => {
-        const fetchOrdersAndExpenses = async () => {
-            setIsLoading(true);
-            try {
-                const ordersResponse = await fetch(`http://localhost:3004/api/order/event/${eventId}`);
-                const expensesResponse = await fetch(`http://localhost:3004/api/event/${eventId}/expense`);
-                
-                if (ordersResponse.ok && expensesResponse.ok) {
-                    const ordersData = await ordersResponse.json();
-                    const expensesData = await expensesResponse.json();
+        fetchEventsAndExpenses();
+    }, []);
 
-                    setOrders(ordersData);
-                    setExpenses(expensesData);
-                } else {
-                    // Handle errors here, such as displaying a message to the user
-                    console.error("Failed to fetch orders or expenses");
-                }
-            } catch (error) {
-                console.error("Error fetching data:", error);
+    const fetchEventsAndExpenses = async () => {
+        const token = localStorage.getItem('token');
+        try {
+            const eventResponse = await fetch('http://localhost:3004/api/event', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            if (eventResponse.ok) {
+                const eventData = await eventResponse.json();
+                setEvents(eventData.data);
+                eventData.data.forEach(event => {
+                    fetchExpensesForEvent(event.id, token);
+                });
+            } else {
+                console.error('Failed to fetch events');
             }
-            setIsLoading(false);
-        };
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        }
+    };
 
-        fetchOrdersAndExpenses();
-    }, [eventId]);
-
-    if (isLoading) return <div>Loading...</div>;
+    const fetchExpensesForEvent = async (eventId, token) => {
+        try {
+            const expenseResponse = await fetch(`http://localhost:3004/api/event/${eventId}/expense`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+            if (expenseResponse.ok) {
+                const expenseData = await expenseResponse.json();
+                setExpenses(prevExpenses => ({
+                    ...prevExpenses,
+                    [eventId]: expenseData.data
+                }));
+            } else {
+                console.error(`Failed to fetch expenses for event ${eventId}`);
+            }
+        } catch (error) {
+            console.error(`Error fetching expenses for event ${eventId}:`, error);
+        }
+    };
 
     return (
-        <div>
-            <h2>Orders for Event {eventId}</h2>
-            {orders.map(order => (
-                <div key={order.id}>
-                    <p>Order ID: {order.id}, Quantity: {order.quantity}, Total: {order.total}</p>
-                </div>
-            ))}
-            <h2>Expenses for Event {eventId}</h2>
-            {expenses.map(expense => (
-                <div key={expense.id}>
-                    <p>Expense ID: {expense.id}, Amount: {expense.amount}, Description: {expense.description}</p>
+        <div className="expenses-table-container">
+            <h1>Event Expenses Overview</h1>
+            {events.map(event => (
+                <div key={event.id}>
+                    <h3>{event.name} - Expenses</h3>
+                    <table className="expenses-table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {expenses[event.id]?.map((expense) => (
+                                <tr key={expense.id}>
+                                    <td>{expense.description}</td>
+                                    <td>${expense.amount.toFixed(2)}</td>
+                                    <td>{new Date(expense.date).toLocaleDateString()}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             ))}
         </div>
@@ -101,3 +138,4 @@ function OrdersPage({ eventId }) {
 }
 
 export default OrdersPage;
+
