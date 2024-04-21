@@ -55,6 +55,49 @@ function TicketForm() {
             console.error(`Error fetching tickets for event ${eventId}:`, error);
         }
     };
+        //---------------------------------------------------- DELETE TICKETS ----------------------------------
+        const deleteTicket = async (id) => {
+            if (!id) {
+                console.error('Ticket ID is undefined');
+                return;  // Prevent making a request with an undefined ticket ID
+            }
+            console.log('Deleting ticket with ID:', id); // This should log a defined ticket ID, not undefined
+            const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+            try {
+                const response = await fetch(`http://localhost:3004/api/event/ticket/${id}`, {
+                    method: 'DELETE', // Specify the method to be DELETE
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+        
+                if (response.ok) {
+                    // Successfully deleted the ticket
+                    console.log('Ticket deleted successfully');
+                    // Update your tickets state to remove the deleted ticket
+                    setTickets(prevTickets => {
+                        const updatedTickets = { ...prevTickets };
+                        for (const eventId in updatedTickets) {
+                            updatedTickets[eventId] = updatedTickets[eventId].filter(ticket => ticket.id !== id);
+                        }
+                        return updatedTickets;
+                    });
+                } else {
+                    const errorData = await response.json();
+                    console.error('Failed to delete the ticket:', errorData.message);
+                    // Optionally, show an error message to the user
+                }
+            } catch (error) {
+                console.error('Error deleting the ticket:', error);
+                // Optionally, show an error message to the user
+            }
+        };
+        
+        
+
+
+ 
 
     return (
         <div className="tickets-table-container">
@@ -69,15 +112,17 @@ function TicketForm() {
                                 <th>Type</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
+                                <th>Manage</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {tickets[event.id]?.map(ticket => (
-                                <tr key={ticket.ticketId}>
+                            {tickets[event.id]?.map((ticket) => (
+                                <tr key={ticket.id}>
                                     <td>{ticket.description}</td>
                                     <td>{ticket.ticket_type}</td>
                                     <td>{ticket.quantity}</td>
                                     <td>${ticket.price}</td>
+                                    <td> <button onClick={() => deleteTicket(ticket.id)}>Delete</button></td>
                                 </tr>
                             ))}
                         </tbody>

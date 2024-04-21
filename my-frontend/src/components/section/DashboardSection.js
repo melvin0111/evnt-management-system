@@ -183,8 +183,7 @@ const [eventList, setEvents] = useState([]);
         }
     };
 
-        
-        
+
 
 
     return (
@@ -229,7 +228,6 @@ const [eventList, setEvents] = useState([]);
                         <td>{event.capacity}</td>
                             <td><button onClick={() => handleManageTickets(event.id)}>Manage Tickets</button></td> 
                             <td><button onClick={() => deleteEvent(event.id)}>Delete</button></td> 
-
                         </tr>
                     ))}
                 </tbody>
