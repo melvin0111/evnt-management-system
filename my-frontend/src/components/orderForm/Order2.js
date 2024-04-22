@@ -422,7 +422,7 @@ function OrdersPage() {
                     <table className="expenses-table">
                         <thead>
                             <tr>
-                                <th>Description</th>
+                                <th>Category</th>
                                 <th>Amount</th>
                                 <th>Tickets Sold</th>
                                 <th>Total Revenue</th>
