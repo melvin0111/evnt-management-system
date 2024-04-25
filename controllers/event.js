@@ -59,7 +59,7 @@ const del = async (req, res) => {
         return success({ message: "Event deleted successfully" }, res, "200");
     } catch (error) {
         console.error("Error deleting event:", error);
-        return failedResponse(res, new HTTP_ERRORS.InternalServerError(error), "Failed to delete event");
+        return failedResponse(res, new HTTP_ERRORS.InternalServerError(error));
     }
 };
 const getAllUserEvents = async (req, res) => {
