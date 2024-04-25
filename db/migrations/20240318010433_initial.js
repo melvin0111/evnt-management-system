@@ -13,7 +13,7 @@ exports.up = async function (knex) {
         table.integer('created_by').unsigned();
         table.string('password', 255).notNullable();
         table.timestamps(true, true);
-        table.foreign('created_by').references('id').inTable('users');
+        table.foreign('created_by').references('id').inTable('users').onDelete('CASCADE');
         table.index('email', 'idx_user_email');
         table.index('created_by', 'idx_user_created_by');
 
@@ -29,7 +29,7 @@ exports.up = async function (knex) {
         table.integer('capacity').notNullable();
         table.string('status', 255).notNullable().defaultTo('UPCOMING');
         table.timestamps(true, true);
-        table.foreign('user_id').references('users.id');
+        table.foreign('user_id').references('users.id').onDelete('CASCADE');
         table.index(['start_date', 'end_date'], 'idx_start_date_end_date');
         table.index('user_id', 'idx_user_id');
     })
@@ -43,7 +43,7 @@ exports.up = async function (knex) {
         table.integer('quantity');
         table.decimal('price');
         table.timestamps(true, true);
-        table.foreign('event_id').references('id').inTable('events');
+        table.foreign('event_id').references('id').inTable('events').onDelete('CASCADE');
         table.index('event_id', 'idx_event_id');
     })
 
@@ -56,9 +56,9 @@ exports.up = async function (knex) {
         table.float('total_amount').notNullable();
         table.integer('status');
         table.timestamps(true, true);
-        table.foreign('user_id').references('id').inTable('users');
-        table.foreign('event_id').references('id').inTable('events');
-        table.foreign('ticket_id').references('id').inTable('tickets');
+        table.foreign('user_id').references('id').inTable('users').onDelete('CASCADE');
+        table.foreign('event_id').references('id').inTable('events').onDelete('CASCADE');
+        table.foreign('ticket_id').references('id').inTable('tickets').onDelete('CASCADE');
         table.index(['user_id', 'event_id'], 'idx_user_id_event_id');
         table.index('event_id', 'idx_order_event_id');
         table.index('user_id', 'idx_order_user_id');
@@ -78,8 +78,8 @@ exports.up = async function (knex) {
         table.datetime('paid_at');
         table.string('receipt_url', 255);
         table.timestamps(true, true);
-        table.foreign('event_id').references('id').inTable('events');
-        table.foreign('category_id').references('id').inTable('expense_categories');
+        table.foreign('event_id').references('id').inTable('events').onDelete('CASCADE');
+        table.foreign('category_id').references('id').inTable('expense_categories').onDelete('CASCADE');
         table.index('event_id', 'idx_expense_event_id');
         table.index(['category_id', 'event_id'], 'idx_expense_category_event_id');
     })
@@ -94,7 +94,7 @@ exports.up = async function (knex) {
         table.decimal('total_amount');
         table.datetime('paid_at');
         table.timestamps(true, true);
-        table.foreign('event_id').references('id').inTable('events');
+        table.foreign('event_id').references('id').inTable('events').onDelete('CASCADE');
         table.index('event_id', 'idx_salary_event_id');
     })
     return
