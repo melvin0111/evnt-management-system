@@ -53,10 +53,11 @@ const query = async (req, res) => {
 
 const highest_attendance = async (req, res) => {
     try {
-        const result = await knex.raw(`SELECT e.name, COUNT(*) AS attendance
+        const [result] = await knex.raw(`SELECT e.name, COUNT(*) AS attendance
         FROM events e
         INNER JOIN orders o ON e.id = o.event_id
-        user_id = ${req.user.id}
+        where
+        e.user_id = ${req.user.id}
         GROUP BY e.name
         ORDER BY attendance DESC
         LIMIT 1;`)
@@ -68,12 +69,12 @@ const highest_attendance = async (req, res) => {
 }
 const most_selling_ticket = async (req, res) => {
     try {
-        const result = await knex.raw(`select event_name , ticket_type from (
+        const [result] = await knex.raw(`select event_name , ticket_type from (
             SELECT e.name as event_name , t.ticket_type as ticket_type,count( o.quantity ) as quantity , RANK() over (partition by e.name ORDER BY count( o.quantity )) as ranking
             FROM events e
             INNER JOIN tickets t ON e.id = t.event_id
             INNER JOIN orders o ON e.id = o.event_id
-            where user_id = ${req.user.id}
+            where e.user_id = ${req.user.id}
             GROUP BY e.name,t.ticket_type) as temp where temp.ranking =1;`)
         return success(result, res, "200", "Success");
     } catch (error) {
@@ -83,12 +84,12 @@ const most_selling_ticket = async (req, res) => {
 }
 const most_revenue_ticket = async (req, res) => {
     try {
-        const result = await knex.raw(`select event_name , ticket_type from (
+        const [result] = await knex.raw(`select event_name , ticket_type from (
             SELECT e.name as event_name , t.ticket_type as ticket_type,SUM( o.total_amount ) as amount , RANK() over (partition by e.name ORDER BY SUM( o.total_amount ) ) as ranking
             FROM events e
             INNER JOIN tickets t ON e.id = t.event_id
             INNER JOIN orders o ON e.id = o.event_id
-            where user_id = ${req.user.id}
+            where e.user_id = ${req.user.id}
             GROUP BY e.name,t.ticket_type) as temp where temp.ranking =1;`)
         return success(result, res, "200", "Success");
     } catch (error) {
@@ -99,10 +100,10 @@ const most_revenue_ticket = async (req, res) => {
 
 const calender_anaylysis = async (req, res) => {
     try {
-        const result = await knex.raw(`SELECT YEAR(e.start_date) AS year, MONTH(e.start_date) AS month, COUNT(*) AS num_events, SUM(o.total_amount) AS total_revenue
+        const [result] = await knex.raw(`SELECT YEAR(e.start_date) AS year, MONTH(e.start_date) AS month, COUNT(*) AS num_events, SUM(o.total_amount) AS total_revenue
         FROM events e
         JOIN orders o ON e.id = o.event_id
-        where user_id = ${req.user.id}
+        where e.user_id = ${req.user.id}
         GROUP BY YEAR(e.start_date), MONTH(e.start_date)
         ORDER BY year, month;`)
         return success(result, res, "200", "Success");
@@ -114,12 +115,12 @@ const calender_anaylysis = async (req, res) => {
 
 const location_analysis = async (req, res) => {
     try {
-        const result = await knex.raw(`SELECT location->>"$.city" AS City, 
+        const [result] = await knex.raw(`SELECT location->>"$.city" AS City, 
         COUNT(distinct e.id ) AS NumberOfEvents,
         COALESCE(SUM(ex.amount), 0) AS TotalExpenses
         FROM events e
         LEFT JOIN expense ex ON e.id = ex.event_id
-        where user_id = ${req.user.id}
+        where e.user_id = ${req.user.id}
         GROUP BY location->>"$.city" 
         ORDER BY NumberOfEvents DESC;`)
         return success(result, res, "200", "Success");
@@ -131,7 +132,7 @@ const location_analysis = async (req, res) => {
 
 const avg_ticket_price = async (req, res) => {
     try {
-        const result = await knex.raw(`SELECT e.name AS EventName, 
+        const [result] = await knex.raw(`SELECT e.name AS EventName, 
         AVG(t.price) AS AverageTicketPrice
       FROM events e
       JOIN tickets t ON e.id = t.event_id
